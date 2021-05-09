@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改收款合同')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: bootstrap-select-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-contract_collection-edit" th:object="${sysContractCollection}">
+            <input name="contractId" th:field="*{contractId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">合同编号：</label>
+                <div class="col-sm-8">
+                    <input name="contractNum" th:field="*{contractNum}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">合同名称：</label>
+                <div class="col-sm-8">
+                    <input name="contractName" th:field="*{contractName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">客户名称：</label>
+                <div class="col-sm-8">
+                    <select name="clientName" id="clientName" lay-verify="required" class="form-control">
+                        <option th:field="*{clientName}" th:each="client:${clients}" th:value="${client.clientFullName}"
+                                th:text="${client.clientFullName}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">合同标的：</label>
+                <!--<div class="col-sm-8">
+                    <input name="contractObject" th:field="*{contractObject}" class="form-control" type="text">
+                </div>-->
+                <div class="col-sm-8">
+                    <select name="contractObject" id="contractObject" lay-verify="required" class="form-control">
+                        <option th:field="*{contractObject}" th:each="product:${products}" th:value="${product.productName}"
+                                th:text="${product.productName}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">规格版本：</label>
+                <div class="col-sm-8">
+                    <input name="specificationVersion" th:field="*{specificationVersion}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">业务员：</label>
+                <!--<div class="col-sm-8">
+                    <input name="manager" th:field="*{manager}" class="form-control" type="text">
+                </div>-->
+                <div class="col-sm-8">
+                    <select name="manager" id="manager" lay-verify="required" class="form-control">
+                        <option th:field="*{manager}" th:each="employee:${employees}" th:value="${employee.employeeName}"
+                                th:text="${employee.employeeName}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">合同金额：</label>
+                <div class="col-sm-8">
+                    <input name="contractAmount" th:field="*{contractAmount}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">签订日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="signDate" th:value="${#dates.format(sysContractCollection.signDate, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">履约保证金：</label>
+                <div class="col-sm-8">
+                    <input name="performanceBond" th:field="*{performanceBond}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">付款条件：</label>
+                <div class="col-sm-8">
+                    <input name="paymentTerm" th:field="*{paymentTerm}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <input name="remarks" th:field="*{remarks}" class="form-control" type="text">
+                </div>
+            </div>
+
+            <!--<div class="form-group">
+                <label class="col-sm-3 control-label">文件: </label>
+                <div id="uploadDiv1" class="uploadDiv" >
+                    <input name="scanningCopy" class="form-control hide truefilePath" type="text" th:field="*{scanningCopy}">
+                    <div class="controlDiv hide">
+                        <a href="javascript:void(0);" target="_blank" class="link"></a>
+                        <a class="btn btn-xs delBtn" href="javascript:void(0)" >
+                            <i class="fa fa-remove"></i>
+                        </a>
+                    </div>
+                    <div class="inputOut">
+                        <input class="form-control fileInput" type="file" onChange="uploadFile(this)" >
+                    </div>
+                </div>
+            </div>-->
+
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: select2-js" />
+    <th:block th:include="include :: bootstrap-select-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/contract_collection";
+        $("#form-contract_collection-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                //$.operate.save(prefix + "/edit", $('#form-contract_collection-edit').serialize());
+                data = $('#form-contract_collection-edit').serializeArray()
+                var clientFullNames = $.form.selectSelects("clientName");
+                var productNames = $.form.selectSelects("productName");
+                var employeeNames = $.form.selectSelects("employeeName");
+                data.push({"name": "clientFullNames", "value": clientFullNames});
+                data.push({"name": "productNames", "value": productNames});
+                data.push({"name": "employeeNames", "value": employeeNames});
+                $.operate.save(prefix + "/edit", data);
+            }
+        }
+
+        $("input[name='signDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $(function() {
+            $('#client').select2({
+                placeholder: "请选择客户",
+                allowClear: true
+            });
+        })
+    </script>
+</body>
+</html>
