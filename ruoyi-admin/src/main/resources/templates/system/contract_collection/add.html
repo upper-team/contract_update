@@ -108,19 +108,19 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">上传：</label>
-                        <div class="file-loading">
-                            <input id="input-folder-3" type="file" name="file" multiple>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="row">-->
+<!--                <div class="col-sm-12">-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-3 control-label">上传：</label>-->
+<!--                        <div class="file-loading">-->
+<!--                            <input id="input-folder-3" type="file" name="file" multiple>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <!--<div class="form-group">
-                <label class="col-sm-3 control-label">文件: </label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上传：</label>
                 <div id="uploadDiv1" class="uploadDiv" >
                     <input name="scanningCopy" class="form-control hide truefilePath" type="text">
                     <div class="controlDiv hide">
@@ -129,11 +129,27 @@
                             <i class="fa fa-remove"></i>
                         </a>
                     </div>
-                    <div class="inputOut">
-                        <input class="form-control fileInput" type="file" onChange="uploadFile(this)" >
+                    <div class="file-loading">
+                        <input id="input-folder-3" type="file" name="file" multiple>
                     </div>
                 </div>
-            </div>-->
+            </div>
+
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">文件: </label>-->
+<!--                <div id="uploadDiv1" class="uploadDiv" >-->
+<!--                    <input name="scanningCopy" class="form-control hide truefilePath" type="text">-->
+<!--                    <div class="controlDiv hide">-->
+<!--                        <a href="javascript:void(0);" target="_blank" class="link"></a>-->
+<!--                        <a class="btn btn-xs delBtn" href="javascript:void(0)" >-->
+<!--                            <i class="fa fa-remove"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                    <div class="inputOut">-->
+<!--                        <input class="form-control fileInput" type="file" onChange="uploadFile(this)" >-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
         </form>
     </div>
@@ -144,7 +160,7 @@
     <th:block th:include="include :: select2-js" />
     <th:block th:include="include :: bootstrap-select-js" />
     <th:block th:include="include :: bootstrap-fileinput-js"/>
-    <!--<th:block th:include="include :: upload-lxz.js" />-->
+<!--    <th:block th:include="include :: upload-lxz.js" />-->
     <script th:inline="javascript">
         var prefix = ctx + "system/contract_collection"
         $("#form-contract_collection-add").validate({
