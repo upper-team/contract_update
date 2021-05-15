@@ -1,12 +1,16 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.exception.BusinessException;
+import com.ruoyi.common.utils.file.FileUploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.SysContractCollectionMapper;
 import com.ruoyi.system.domain.SysContractCollection;
 import com.ruoyi.system.service.ISysContractCollectionService;
 import com.ruoyi.common.core.text.Convert;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 收款合同Service业务层处理
@@ -90,5 +94,20 @@ public class SysContractCollectionServiceImpl implements ISysContractCollectionS
     public int deleteSysContractCollectionById(Long contractId)
     {
         return sysContractCollectionMapper.deleteSysContractCollectionById(contractId);
+    }
+
+    @Override
+    public String uploadFile(SysContractCollection SysContractCollection, MultipartFile file) {
+        String uploadFileName = null;
+        try {
+            // 上传文件路径(可自定义)
+            String filePath = "D:\\ruoyi\\uploadPath\\"+SysContractCollection.getContractName();
+            // 上传并返回新文件名称
+            FileUploadUtils.upload(filePath, file);
+            uploadFileName = filePath+"\\"+file.getOriginalFilename();
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+        return uploadFileName;
     }
 }

@@ -66,7 +66,9 @@ public class SysContractCollection extends BaseEntity
     private String remarks;
 
     /** 合同扫描件 */
-    private Long scanningCopy;
+    private String scanningCopy;
+
+    private String[] idArr;
 
     public void setContractId(Long contractId) 
     {
@@ -176,14 +178,23 @@ public class SysContractCollection extends BaseEntity
     {
         return remarks;
     }
-    public void setScanningCopy(Long scanningCopy) 
+    public void setScanningCopy(String scanningCopy)
     {
         this.scanningCopy = scanningCopy;
     }
 
-    public Long getScanningCopy() 
+    public String getScanningCopy()
     {
         return scanningCopy;
+    }
+
+
+    public String[] getIdArr() {
+        return idArr;
+    }
+
+    public void setIdArr(String[] idArr) {
+        this.idArr = idArr;
     }
 
     @Override

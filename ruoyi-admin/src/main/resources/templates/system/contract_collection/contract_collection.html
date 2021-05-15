@@ -48,6 +48,9 @@
 <!--                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:contract_collection:export">-->
 <!--                    <i class="fa fa-download"></i> 导出-->
 <!--                </a>-->
+                <a class="btn btn-warning" onclick="exportPdf()" shiro:hasPermission="system:contract_collection:downPDF">
+                    <i class="fa fa-download"></i> 下载合同文件
+                </a>
             </div>
             <div class="col-sm-12 select-table table-striped">
                 <table id="bootstrap-table"></table>
@@ -121,6 +124,11 @@
                     title: '备注'
                 },
                 {
+                    field: "scanningCopy",
+                    title: "文件存放路径"
+
+                },
+                {
                     title: '操作',
                     align: 'center',
                     formatter: function(value, row, index) {
@@ -133,6 +141,22 @@
             };
             $.table.init(options);
         });
+
+        function exportPdf() {
+            var url = prefix + '/downPDF';
+            var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+            var data = {"ids":rows.join()}
+            $.operate.post(url,data,function (result) {
+                if (result.code == web_status.SUCCESS) {
+                    window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + false;
+                } else if (result.code == web_status.WARNING) {
+                    $.modal.alertWarning(result.msg)
+                } else {
+                    $.modal.alertError(result.msg);
+                }
+                $.modal.closeLoading();
+            });
+        }
     </script>
 </body>
 </html>

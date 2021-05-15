@@ -24,6 +24,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select contract_id, contract_num, contract_name, client_name, contract_object, specification_version, manager, contract_amount, sign_date, performance_bond, payment_term, remarks, scanning_copy from sys_contract_collection
     </sql>
 
+
+
     <select id="selectSysContractCollectionList" parameterType="SysContractCollection" resultMap="SysContractCollectionResult">
         <include refid="selectSysContractCollectionVo"/>
         <where>  

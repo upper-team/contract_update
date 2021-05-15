@@ -231,4 +231,6 @@ public class SysContractCooperativeController extends BaseController
     {
         return toAjax(sysContractCooperativeService.deleteSysContractCooperativeByIds(ids));
     }
+
+
 }
