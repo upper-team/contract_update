@@ -172,6 +172,8 @@ public class SysContractCollectionController extends BaseController
         SysContractCollection.setIdArr(Convert.toStrArray(ids));
         List<SysContractCollection> SysContractCollectionList = sysContractCollectionService.selectSysContractCollectionList(SysContractCollection);
         for(SysContractCollection SysContractCollection1 : SysContractCollectionList){
+//            String id = SysContractCollection1.getIdArr();
+
             String pdfUrl = SysContractCollection1.getScanningCopy();//拿到pdf存储路径
             return AjaxResult.success(pdfUrl);
         }

@@ -33,6 +33,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="clientName != null  and clientName != ''"> and client_name like concat('%', #{clientName}, '%')</if>
             <if test="manager != null  and manager != ''"> and manager = #{manager}</if>
             <if test="signDate != null "> and sign_date = #{signDate}</if>
+            <if test="idArr != null and idArr.length > 0"> and contract_id in
+                <foreach item="contractId" collection="idArr" open="(" separator="," close=")">
+                    #{contractId}
+                </foreach>
+            </if>
         </where>
     </select>
     
