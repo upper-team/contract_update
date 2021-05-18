@@ -24,7 +24,7 @@
                             </li>
 <!--                            <li>-->
 <!--                                <label>签订日期：</label>-->
-<!--                                <input type="text" class="time-input" placeholder="请选择签订日期" name="contractDate"/>&ndash;&gt;-->
+<!--                                <input type="text" class="time-input" placeholder="请选择签订日期" name="contractDate"/>-->
 <!--                            </li>-->
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -48,6 +48,9 @@
 <!--                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:cooperative:export">-->
 <!--                    <i class="fa fa-download"></i> 导出-->
 <!--                </a>-->
+                <a class="btn btn-warning" onclick="exportPdf()" shiro:hasPermission="system:cooperative:downPDF">
+                    <i class="fa fa-download"></i> 下载合同文件
+                </a>
             </div>
             <div class="col-sm-12 select-table table-striped">
                 <table id="bootstrap-table"></table>
@@ -56,9 +59,24 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
+        // 检查用户是否拥有system.cooperative中的edit/remove权限
         var editFlag = [[${@permission.hasPermi('system:cooperative:edit')}]];
         var removeFlag = [[${@permission.hasPermi('system:cooperative:remove')}]];
+        var downloadFlag = [[${@permission.hasPermi('system:cooperative:importTemplate')}]];
         var prefix = ctx + "system/cooperative";
+
+        function downloadFile(value){
+            window.location.href = ctx + "common/download/resource?resource=" + value;
+        }
+
+        var filename = prefix + "upload";
+        function download(filename) {
+
+        $.modal.confirm("确定要文件下载吗？", function() {
+            //将路径名一部分/upload/2021/05/10/xxx.jpg传给controller
+            location.href = ctx+'common/download/resource'+filename.substring(filename.lastIndexOf("/upload"));
+        });
+        }
 
         $(function() {
             var options = {
@@ -67,6 +85,7 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
+                downloadUrl: prefix + "/download", //
                 modalName: "合作合同",
                 columns: [{
                     checkbox: true
@@ -105,19 +124,25 @@
                     title: '备注'
                 },
                 {
-                    field : 'filePath',
-                    title: '预览',
-                    formatter: function(value, row, index) {
-                        return $.table.imageView(value);
-                    }
+                    field: "scanningCopy",
+                    title: "文件存放路径"
+
                 },
+                // {
+                //     field : 'filePath',
+                //     title: '预览',
+                //     formatter: function(value, row, index) {
+                //         return $.table.imageView(value);
+                //     }
+                // },
                 {
                     title: '操作',
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
-                        //actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.contractId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-
+                        // actions.push('<a class="btn btn-success btn-xs ' + downloadFlag + '" href="javascript:void(0)" onclick="onclick="exportPdf()" shiro:hasPermission="system:cooperative:downPDF"><i class="fa fa-download"></i>下载</a> ');
+                        // actions.push('<a class="btn btn-success btn-xs ' + downloadFlag + '" href="javascript:void(0)" onclick="$.operate.importTemplate(\'' + row.contractId + '\')"><i class="fa fa-download"></i>下载</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.contractId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.contractId + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
                     }
@@ -125,6 +150,23 @@
             };
             $.table.init(options);
         });
+
+        function exportPdf() {
+            var url = prefix + '/downPDF';
+            var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+            var data = {"ids":rows.join()}
+            $.operate.post(url,data,function (result) {
+                if (result.code == web_status.SUCCESS) {
+                    window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + false;
+                } else if (result.code == web_status.WARNING) {
+                    $.modal.alertWarning(result.msg)
+                } else {
+                    $.modal.alertError(result.msg);
+                }
+                $.modal.closeLoading();
+            });
+        }
+
     </script>
 </body>
 </html>

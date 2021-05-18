@@ -101,7 +101,7 @@ public class SysContractCollectionServiceImpl implements ISysContractCollectionS
         String uploadFileName = null;
         try {
             // 上传文件路径(可自定义)
-            String filePath = "D:\\ruoyi\\uploadPath\\"+SysContractCollection.getContractName();
+            String filePath = "D:\\ruoyi\\uploadPath\\"+SysContractCollection.getContractNum()+"_"+SysContractCollection.getContractName();
             // 上传并返回新文件名称
             FileUploadUtils.upload(filePath, file);
             uploadFileName = filePath+"\\"+file.getOriginalFilename();

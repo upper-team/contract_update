@@ -1,7 +1,9 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
 import com.ruoyi.system.domain.SysContractCooperative;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * 合作合同Service接口
@@ -58,4 +60,7 @@ public interface ISysContractCooperativeService
      * @return 结果
      */
     public int deleteSysContractCooperativeById(Long contractId);
+
+    public String uploadFile(SysContractCooperative SysContractCollection, MultipartFile file);
+
 }

@@ -13,10 +13,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="employeeName"    column="employee_name"    />
         <result property="contractDate"    column="contract_date"    />
         <result property="remarks"    column="remarks"    />
+        <result property="scanningCopy"    column="scanning_copy"    />
     </resultMap>
 
     <sql id="selectSysContractCooperativeVo">
-        select contract_id, contract_num, contract_name, cooperation_unit, contract_object, employee_name, contract_date, remarks from sys_contract_cooperative
+        select contract_id, contract_num, contract_name, cooperation_unit, contract_object, employee_name, contract_date, remarks, scanning_copy from sys_contract_cooperative
     </sql>
 
     <select id="selectSysContractCooperativeList" parameterType="SysContractCooperative" resultMap="SysContractCooperativeResult">
@@ -26,6 +27,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="cooperationUnit != null  and cooperationUnit != ''"> and cooperation_unit = #{cooperationUnit}</if>
             <if test="employeeName != null  and employeeName != ''"> and employee_name like concat('%', #{employeeName}, '%')</if>
             <if test="contractDate != null "> and contract_date = #{contractDate}</if>
+            <if test="idArr != null and idArr.length > 0"> and contract_id in
+                <foreach item="contractId" collection="idArr" open="(" separator="," close=")">
+                    #{contractId}
+                </foreach>
+            </if>
         </where>
     </select>
     
@@ -45,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="employeeName != null and employeeName != ''">employee_name,</if>
             <if test="contractDate != null">contract_date,</if>
             <if test="remarks != null">remarks,</if>
+            <if test="scanningCopy != null">scanning_copy,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="contractId != null">#{contractId},</if>
@@ -55,6 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="employeeName != null and employeeName != ''">#{employeeName},</if>
             <if test="contractDate != null">#{contractDate},</if>
             <if test="remarks != null">#{remarks},</if>
+            <if test="scanningCopy != null">#{scanningCopy},</if>
          </trim>
     </insert>
 
@@ -68,6 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="employeeName != null and employeeName != ''">employee_name = #{employeeName},</if>
             <if test="contractDate != null">contract_date = #{contractDate},</if>
             <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="scanningCopy != null">scanning_copy = #{scanningCopy},</if>
         </trim>
         where contract_id = #{contractId}
     </update>

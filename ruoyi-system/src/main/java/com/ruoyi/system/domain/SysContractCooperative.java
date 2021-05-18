@@ -1,11 +1,12 @@
 package com.ruoyi.system.domain;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Date;
 
 /**
  * 合作合同对象 sys_contract_cooperative
@@ -49,6 +50,11 @@ public class SysContractCooperative extends BaseEntity
     @Excel(name = "备注")
     private String remarks;
 
+    /** 合同扫描件 */
+    private String scanningCopy;
+
+    private String[] idArr;
+
     public void setContractId(Long contractId) 
     {
         this.contractId = contractId;
@@ -71,11 +77,9 @@ public class SysContractCooperative extends BaseEntity
     {
         this.contractName = contractName;
     }
+    public String getContractName() { return contractName; }
 
-    public String getContractName() 
-    {
-        return contractName;
-    }
+
     public void setCooperationUnit(String cooperationUnit) 
     {
         this.cooperationUnit = cooperationUnit;
@@ -122,6 +126,24 @@ public class SysContractCooperative extends BaseEntity
         return remarks;
     }
 
+    public void setScanningCopy(String scanningCopy)
+    {
+        this.scanningCopy = scanningCopy;
+    }
+
+    public String getScanningCopy()
+    {
+        return scanningCopy;
+    }
+
+    public String[] getIdArr() {
+        return idArr;
+    }
+
+    public void setIdArr(String[] idArr) {
+        this.idArr = idArr;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -133,6 +155,7 @@ public class SysContractCooperative extends BaseEntity
             .append("employeeName", getEmployeeName())
             .append("contractDate", getContractDate())
             .append("remarks", getRemarks())
+            .append("scanningCopy", getScanningCopy())
             .toString();
     }
 }

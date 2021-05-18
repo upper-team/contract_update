@@ -1,10 +1,8 @@
 package com.ruoyi.system.mapper;
 
-import java.util.List;
-
-import com.ruoyi.system.domain.SysClient;
 import com.ruoyi.system.domain.SysContractCooperative;
-import com.ruoyi.system.domain.SysProduct;
+
+import java.util.List;
 
 /**
  * 合作合同Mapper接口

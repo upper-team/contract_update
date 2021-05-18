@@ -1,12 +1,16 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
+import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.common.exception.BusinessException;
+import com.ruoyi.common.utils.file.FileUploadUtils;
+import com.ruoyi.system.domain.SysContractCooperative;
+import com.ruoyi.system.mapper.SysContractCooperativeMapper;
+import com.ruoyi.system.service.ISysContractCooperativeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.system.mapper.SysContractCooperativeMapper;
-import com.ruoyi.system.domain.SysContractCooperative;
-import com.ruoyi.system.service.ISysContractCooperativeService;
-import com.ruoyi.common.core.text.Convert;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * 合作合同Service业务层处理
@@ -90,5 +94,20 @@ public class SysContractCooperativeServiceImpl implements ISysContractCooperativ
     public int deleteSysContractCooperativeById(Long contractId)
     {
         return sysContractCooperativeMapper.deleteSysContractCooperativeById(contractId);
+    }
+
+    @Override
+    public String uploadFile(SysContractCooperative SysContractCooperative, MultipartFile file) {
+        String uploadFileName = null;
+        try {
+            // 上传文件路径(可自定义)
+            String filePath = "D:\\ruoyi\\uploadPath\\"+SysContractCooperative.getContractNum()+"_"+SysContractCooperative.getContractName();
+            // 上传并返回新文件名称
+            FileUploadUtils.upload(filePath, file);
+            uploadFileName = filePath+"\\"+file.getOriginalFilename();
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+        return uploadFileName;
     }
 }
