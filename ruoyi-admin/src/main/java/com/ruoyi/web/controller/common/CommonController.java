@@ -47,6 +47,39 @@ public class CommonController
             {
                 throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", fileName));
             }
+            String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
+            String filePath = RuoYiConfig.getDownloadPath() + fileName;
+
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+            FileUtils.setAttachmentResponseHeader(response, realFileName);
+            FileUtils.writeBytes(filePath, response.getOutputStream());
+            if (delete)
+            {
+                FileUtils.deleteFile(filePath);
+            }
+        }
+        catch (Exception e)
+        {
+            log.error("下载文件失败", e);
+        }
+    }
+
+
+    /**
+     * 不通用下载请求
+     *
+     * @param fileName 文件名称
+     * @param delete 是否删除
+     */
+    @GetMapping("common/download1")
+    public void fileDownload1(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request)
+    {
+        try
+        {
+            if (!FileUtils.checkAllowDownload(fileName))
+            {
+                throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", fileName));
+            }
 //            String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
             String filePath = fileName;
 
@@ -62,6 +95,7 @@ public class CommonController
         {
             log.error("下载文件失败", e);
         }
+
     }
 
     /**

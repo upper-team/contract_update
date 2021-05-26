@@ -2,8 +2,10 @@ package com.ruoyi.web.controller;
 
 import java.util.List;
 
+import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.service.*;
+import com.ruoyi.common.utils.file.FileUploadUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
-
+import org.springframework.web.multipart.MultipartFile;
 /**
  * 付款合同Controller
  * 
@@ -100,8 +102,10 @@ public class SysContractPaymentController extends BaseController
     @Log(title = "付款合同", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(SysContractPayment sysContractPayment)
+    public AjaxResult addSave(SysContractPayment sysContractPayment,MultipartFile file)
     {
+        String scanningCopy = sysContractPaymentService.uploadFile(sysContractPayment, file);
+        sysContractPayment.setScanningCopy(scanningCopy);
         return toAjax(sysContractPaymentService.insertSysContractPayment(sysContractPayment));
     }
 
@@ -144,5 +148,22 @@ public class SysContractPaymentController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(sysContractPaymentService.deleteSysContractPaymentByIds(ids));
+    }
+
+    /**
+     * 下载pdf
+     */
+    @RequiresPermissions("system:contract_collection:downPDF")
+    @PostMapping("/downPDF")
+    @ResponseBody
+    public AjaxResult downPDF(String ids){
+        SysContractPayment sysContractPayment = new SysContractPayment();
+       sysContractPayment.setIdArr(Convert.toStrArray(ids));
+        List<SysContractPayment> SysContractPaymentList = sysContractPaymentService.selectSysContractPaymentList(sysContractPayment);
+        for(SysContractPayment sysContractPayment1  : SysContractPaymentList){
+            String pdfUrl = sysContractPayment1.getScanningCopy();//拿到pdf存储路径
+            return AjaxResult.success(pdfUrl);
+        }
+        return AjaxResult.success("下载完毕");
     }
 }

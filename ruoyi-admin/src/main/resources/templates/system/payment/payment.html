@@ -14,41 +14,18 @@
                                 <label>合同名称：</label>
                                 <input type="text" name="contractName"/>
                             </li>
-<!--                            <li>-->
-<!--                                <label>合同编号：</label>-->
-<!--                                <input type="text" name="contractNum"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>供应商名称：</label>-->
-<!--                                <select name="supplierFullname">-->
-<!--                                    <option value="">所有</option>-->
-<!--                                    <option value="-1">代码生成请选择字典属性</option>-->
-<!--                                </select>-->
-<!--                            </li>-->
+
                             <li>
                                 <label>供应商名称：</label>
                                 <input type="text" name="supplierFullname"/>
                             </li>
-<!--                            <li>-->
-<!--                                <label>合同标的：</label>-->
-<!--                                <select name="productName">-->
-<!--                                    <option value="">所有</option>-->
-<!--                                    <option value="-1">代码生成请选择字典属性</option>-->
-<!--                                </select>-->
-<!--                            </li>-->
+
                             <li>
                                 <label>业务员：</label>
                                 <input type="text" name="employeeName"/>
                                 </select>
                             </li>
-<!--                            <li>-->
-<!--                                <label>合同金额：</label>-->
-<!--                                <input type="text" name="contractSum"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>签订日期：</label>-->
-<!--                                <input type="text" class="time-input" placeholder="请选择签订日期" name="contractDate"/>-->
-<!--                            </li>-->
+
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -71,6 +48,9 @@
 <!--                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:payment:export">-->
 <!--                    <i class="fa fa-download"></i> 导出-->
 <!--                </a>-->
+                <a class="btn btn-warning" onclick="exportPdf()" shiro:hasPermission="system:payment:downPDF">
+                    <i class="fa fa-download"></i> 下载合同文件
+                </a>
             </div>
             <div class="col-sm-12 select-table table-striped">
                 <table id="bootstrap-table"></table>
@@ -131,6 +111,11 @@
                     field: 'remark',
                     title: '备注'
                 },
+                    {
+                        field: "scanningCopy",
+                        title: "文件存放路径"
+
+                    },
                 {
                     title: '操作',
                     align: 'center',
@@ -144,6 +129,21 @@
             };
             $.table.init(options);
         });
+        function exportPdf() {
+            var url = prefix + '/downPDF';
+            var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+            var data = {"ids":rows.join()}
+            $.operate.post(url,data,function (result) {
+                if (result.code == web_status.SUCCESS) {
+                    window.location.href = ctx + "common/download1?fileName=" + encodeURI(result.msg) + "&delete=" + false;
+                } else if (result.code == web_status.WARNING) {
+                    $.modal.alertWarning(result.msg)
+                } else {
+                    $.modal.alertError(result.msg);
+                }
+                $.modal.closeLoading();
+            });
+        }
     </script>
 </body>
 </html>

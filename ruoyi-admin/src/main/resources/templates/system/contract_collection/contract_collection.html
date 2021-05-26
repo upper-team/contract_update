@@ -148,7 +148,7 @@
             var data = {"ids":rows.join()}
             $.operate.post(url,data,function (result) {
                 if (result.code == web_status.SUCCESS) {
-                    window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + false;
+                    window.location.href = ctx + "common/download1?fileName=" + encodeURI(result.msg) + "&delete=" + false;
                 } else if (result.code == web_status.WARNING) {
                     $.modal.alertWarning(result.msg)
                 } else {

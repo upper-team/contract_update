@@ -47,6 +47,11 @@ public class SysContractPayment extends BaseEntity
     @Excel(name = "签订日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date contractDate;
 
+    /** 合同扫描件 */
+    private String scanningCopy;
+
+    private String[] idArr;
+
     public void setContractId(Long contractId) 
     {
         this.contractId = contractId;
@@ -121,6 +126,25 @@ public class SysContractPayment extends BaseEntity
         return contractDate;
     }
 
+    public void setScanningCopy(String scanningCopy)
+    {
+        this.scanningCopy = scanningCopy;
+    }
+
+    public String getScanningCopy()
+    {
+        return scanningCopy;
+    }
+
+
+    public String[] getIdArr() {
+        return idArr;
+    }
+
+    public void setIdArr(String[] idArr) {
+        this.idArr = idArr;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -133,6 +157,8 @@ public class SysContractPayment extends BaseEntity
             .append("contractSum", getContractSum())
             .append("contractDate", getContractDate())
             .append("remark", getRemark())
+                .append("scanningCopy", getScanningCopy())
+
             .toString();
     }
 }
