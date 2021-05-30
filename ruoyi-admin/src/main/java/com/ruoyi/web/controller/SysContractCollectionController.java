@@ -114,8 +114,15 @@ public class SysContractCollectionController extends BaseController
     @ResponseBody
     public AjaxResult addSave(SysContractCollection sysContractCollection, MultipartFile file)
     {
+
         String scanningCopy = sysContractCollectionService.uploadFile(sysContractCollection, file);
         sysContractCollection.setScanningCopy(scanningCopy);
+//        if(scanningCopy.equals("")){
+
+//        }else{
+//            sysContractCollection.setScanningCopy(scanningCopy);
+//        }
+
         return toAjax(sysContractCollectionService.insertSysContractCollection(sysContractCollection));
     }
 

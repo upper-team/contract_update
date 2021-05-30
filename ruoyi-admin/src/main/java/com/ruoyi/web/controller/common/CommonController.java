@@ -72,8 +72,8 @@ public class CommonController
      * @param fileName 文件名称
      * @param delete 是否删除
      */
-    @GetMapping("common/download1")
-    public void fileDownload1(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request)
+    @GetMapping("common/downloadPDF")
+    public void fileDownloadPDF(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request)
     {
         try
         {
